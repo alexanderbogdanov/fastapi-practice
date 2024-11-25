@@ -179,6 +179,8 @@ $RECYCLE.BIN/
 # Local virtual environments
 .venv/
 venv/
+.fastapi-env/
+fastapi-env/
 
 # Python environment settings
 .envrc
@@ -191,3 +193,5 @@ build/
 
 # pyright (VS Code Python Type Checker)
 .pyright/
+
+fastapi-practice.db
