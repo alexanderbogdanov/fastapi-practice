@@ -6,6 +6,8 @@ from routers.blog_post import router as blog_post_router
 from routers.user import router as user_create_router
 from routers.user import router as user_get_router
 from routers.user import router as user_get_by_id_router
+from routers.user import router as user_update_router
+from routers.user import router as user_delete_router
 
 app = FastAPI()
 app.include_router(blog_get_router)
@@ -13,6 +15,8 @@ app.include_router(blog_post_router)
 app.include_router(user_create_router)
 app.include_router(user_get_router)
 app.include_router(user_get_by_id_router)
+app.include_router(user_update_router)
+app.include_router(user_delete_router)
 
 
 @app.get("/hello")
