@@ -13,3 +13,6 @@ class UserDisplay(BaseModel):
         # orm_mode = True
         from_attributes = True 
         
+class DeleteResponse(BaseModel):
+    message: str
+        
