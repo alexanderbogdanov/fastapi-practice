@@ -1,40 +1,44 @@
 from typing import Dict, List, Optional
 from sqlalchemy.orm import Session
 from db.hashing import Hash
-from db.models import DBUser
+from db.models import DbUser
 from schemas import UserBase
 
-def create_user(db: Session, request: UserBase) -> DBUser:
+def create_user(db: Session, request: UserBase) -> DbUser:
     # Check if the username already exists
-    if db.query(DBUser).filter(DBUser.username == request.username).first():
+    if db.query(DbUser).filter(DbUser.username == request.username).first():
         raise ValueError("Username already exists")
     
     # Check if the email already exists
-    if db.query(DBUser).filter(DBUser.email == request.email).first():
+    if db.query(DbUser).filter(DbUser.email == request.email).first():
         raise ValueError("Email already exists")
     
-    new_user = DBUser(username = request.username, email = request.email, password = Hash.bcrypt(request.password))
+    new_user = DbUser(
+        username = request.username, 
+        email = request.email, 
+        password = Hash.bcrypt(request.password)
+        )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
     return new_user
 
 
-def get_all_users(db: Session) -> List[DBUser]:
-    return db.query(DBUser).all()
+def get_all_users(db: Session) -> List[DbUser]:
+    return db.query(DbUser).all()
    
 
-def get_user_by_id(db: Session, id: int) -> Optional[DBUser]:
-    return db.query(DBUser).filter(DBUser.id == id).first()
+def get_user_by_id(db: Session, id: int) -> Optional[DbUser]:
+    return db.query(DbUser).filter(DbUser.id == id).first()
 
-def update_user(db: Session, id: int, request: UserBase) -> DBUser:
-    user = db.query(DBUser).filter(DBUser.id == id).first()
+def update_user(db: Session, id: int, request: UserBase) -> DbUser:
+    user = db.query(DbUser).filter(DbUser.id == id).first()
     if not user:
         raise ValueError(f"User with id {id} not found")
     
-    duplicate_user = db.query(DBUser).filter(
-        (DBUser.username == request.username) | (DBUser.email == request.email),
-        DBUser.id != id
+    duplicate_user = db.query(DbUser).filter(
+        (DbUser.username == request.username) | (DbUser.email == request.email),
+        DbUser.id != id
     ).first()
     
     if duplicate_user:
@@ -51,7 +55,7 @@ def update_user(db: Session, id: int, request: UserBase) -> DBUser:
     return user
 
 def delete_user(db: Session, id: int) -> Dict[str, str]:
-    user = db.query(DBUser).filter(DBUser.id == id).first()
+    user = db.query(DbUser).filter(DbUser.id == id).first()
     if not user:
         raise ValueError(f"User with id {id} not found")
     db.delete(user)

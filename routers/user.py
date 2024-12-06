@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from fastapi import Depends
 from db import db_user
 from db.database import get_db
-from db.models import DBUser
+from db.models import DbUser
 from schemas import UserBase, UserDisplay, DeleteResponse
 
 router = APIRouter(prefix="/user", tags=["user"])
